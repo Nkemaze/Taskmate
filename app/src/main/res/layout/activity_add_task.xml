@@ -19,7 +19,7 @@
             android:background="@color/primary"
             app:navigationIcon="?attr/homeAsUpIndicator"
             app:navigationIconTint="@color/on_primary"
-            app:title="New Task"
+            app:title="@string/new_task"
             app:titleTextColor="@color/on_primary" />
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -39,7 +39,7 @@
                 android:id="@+id/text_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Task Details"
+                android:text="@string/task_details"
                 android:textColor="@color/primary"
                 android:textSize="24sp"
                 android:textStyle="bold"
@@ -51,7 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Fill in the information below to stay organized."
+                android:text="@string/task_details_desc"
                 android:textColor="@color/text_grey"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -63,7 +63,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:hint="What needs to be done?"
+                android:hint="@string/task_title_hint"
                 app:errorEnabled="true"
                 app:layout_constraintTop_toBottomOf="@id/text_sub_header"
                 app:startIconDrawable="@drawable/ic_task_notification"
@@ -83,10 +83,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:hint="Subject / Category"
+                android:hint="@string/subject_hint"
                 app:errorEnabled="true"
                 app:layout_constraintTop_toBottomOf="@id/layout_task_title"
-                app:startIconDrawable="@drawable/ic_empty_tasks"
+                app:startIconDrawable="@drawable/ic_classrooms"
                 app:startIconTint="@color/primary">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -103,7 +103,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:hint="Set Due Date"
+                android:hint="@string/due_date_hint"
                 app:endIconDrawable="@drawable/ic_calendar"
                 app:endIconMode="custom"
                 app:errorEnabled="true"
@@ -126,7 +126,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
                 android:layout_marginTop="32dp"
-                android:text="Create Task"
+                android:text="@string/create_task"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:cornerRadius="16dp"

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_tasks"
+        android:icon="@drawable/ic_task_notification"
+        android:title="Tasks" />
+    <item
+        android:id="@+id/navigation_classrooms"
+        android:icon="@drawable/ic_classrooms"
+        android:title="Classrooms" />
+    <item
+        android:id="@+id/navigation_notifications"
+        android:icon="@drawable/ic_notifications"
+        android:title="Notifications" />
+</menu>

@@ -12,10 +12,11 @@ import java.util.concurrent.Executors;
 /**
  * Room database class for TaskMate.
  */
-@Database(entities = {Task.class}, version = 1, exportSchema = false)
+@Database(entities = {Task.class, Classroom.class}, version = 2, exportSchema = false)
 public abstract class TaskDatabase extends RoomDatabase {
 
     public abstract TaskDao taskDao();
+    public abstract ClassroomDao classroomDao();
 
     private static volatile TaskDatabase INSTANCE;
     private static final int NUMBER_OF_THREADS = 4;
@@ -28,6 +29,7 @@ public abstract class TaskDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                                     TaskDatabase.class, "task_database")
+                            .fallbackToDestructiveMigration()
                             .build();
                 }
             }

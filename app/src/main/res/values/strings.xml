@@ -1,3 +1,29 @@
 <resources>
     <string name="app_name">CampusAlert</string>
+    <string name="title_tasks">Tasks</string>
+    <string name="title_classrooms">Classrooms</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="no_alerts">No alerts yet. Add one!</string>
+    <string name="no_classrooms">No classrooms yet. Join one!</string>
+    <string name="no_notifications">No notifications available.</string>
+    <string name="retry">Retry</string>
+    <string name="network_settings">Network Settings</string>
+    <string name="no_internet_title">No Internet Connection</string>
+    <string name="no_internet_desc">We couldn\'t connect to the campus classroom network. Please check your Wi-Fi settings or cellular data and try again to receive real-time alerts.</string>
+    <string name="join_classroom">Join Classroom</string>
+    <string name="join_classroom_desc">Enter the 6-digit code provided by your instructor to join the classroom.</string>
+    <string name="classroom_code">Classroom Code</string>
+    <string name="join_now">Join Now</string>
+    <string name="classroom_details">Classroom Details</string>
+    <string name="description">Description</string>
+    <string name="leave_classroom">Leave Classroom</string>
+    <string name="new_task">New Task</string>
+    <string name="edit_task">Edit Task</string>
+    <string name="task_details">Task Details</string>
+    <string name="task_details_desc">Fill in the information below to stay organized.</string>
+    <string name="task_title_hint">What needs to be done?</string>
+    <string name="subject_hint">Subject / Category</string>
+    <string name="due_date_hint">Set Due Date</string>
+    <string name="create_task">Create Task</string>
+    <string name="update_task">Update Task</string>
 </resources>

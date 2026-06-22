@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_no_internet"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:visibility="gone"
+    android:elevation="10dp"
+    android:clickable="true"
+    android:focusable="true">
+
+    <ImageView
+        android:id="@+id/image_no_wifi"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:src="@drawable/ic_empty_tasks"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.3"
+        app:tint="#D1D1D1" />
+
+    <TextView
+        android:id="@+id/text_no_internet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="No Internet Connection"
+        android:textColor="@color/on_surface"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/image_no_wifi" />
+
+    <TextView
+        android:id="@+id/text_no_internet_desc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="48dp"
+        android:layout_marginTop="12dp"
+        android:gravity="center"
+        android:text="We couldn't connect to the campus classroom network. Please check your Wi-Fi settings or cellular data and try again to receive real-time alerts."
+        android:textColor="@color/text_grey"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_no_internet" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_retry"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginTop="48dp"
+        android:text="Retry"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:cornerRadius="32dp"
+        app:icon="@drawable/ic_task_notification"
+        app:layout_constraintTop_toBottomOf="@id/text_no_internet_desc" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_network_settings"
+        style="@style/Widget.Material3.Button.TonalButton"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginTop="16dp"
+        android:text="Network Settings"
+        android:textSize="16sp"
+        app:cornerRadius="32dp"
+        app:icon="@drawable/ic_calendar"
+        app:layout_constraintTop_toBottomOf="@id/button_retry" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="32dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="#F0F0F0">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:orientation="vertical">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="STATUS" android:textSize="10sp" android:textStyle="bold" android:textColor="@color/text_grey" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Offline" android:textSize="16sp" android:textStyle="bold" android:textColor="@color/on_surface" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="#F0F0F0">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:orientation="vertical">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="LOCATION" android:textSize="10sp" android:textStyle="bold" android:textColor="@color/text_grey" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="North Wing" android:textSize="16sp" android:textStyle="bold" android:textColor="@color/on_surface" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
