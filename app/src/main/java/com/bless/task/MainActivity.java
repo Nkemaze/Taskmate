@@ -1,125 +1,77 @@
 package com.bless.task;
 
-import android.content.Intent;
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
-import com.bless.task.adapter.TaskAdapter;
-import com.bless.task.data.Task;
 import com.bless.task.databinding.ActivityMainBinding;
-import com.bless.task.viewmodel.TaskViewModel;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.snackbar.Snackbar;
+import com.bless.task.ui.ClassroomsFragment;
+import com.bless.task.ui.NotificationsFragment;
+import com.bless.task.ui.TasksFragment;
 
-import java.util.List;
-
-/**
- * Main Activity for CampusAlert - managing campus-related tasks and alerts.
- */
-public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTaskClickListener {
+public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
-    private TaskViewModel viewModel;
-    private TaskAdapter adapter;
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        viewModel = new ViewModelProvider(this).get(TaskViewModel.class);
+        checkInternetConnection();
 
-        setupRecyclerView();
-        setupFAB();
-        observeTasks();
-        setupSwipeToDelete();
-    }
+        binding.layoutError.buttonRetry.setOnClickListener(v -> checkInternetConnection());
 
-    private void setupRecyclerView() {
-        adapter = new TaskAdapter(this);
-        binding.recyclerViewTasks.setLayoutManager(new LinearLayoutManager(this));
-        binding.recyclerViewTasks.setAdapter(adapter);
-        
-        binding.recyclerViewTasks.setClipToPadding(false);
-        binding.recyclerViewTasks.setPadding(0, 0, 0, 100);
-    }
+        // Default fragment
+        loadFragment(new TasksFragment(), "Tasks");
 
-    private void setupFAB() {
-        binding.fabAddTask.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, AddTaskActivity.class);
-            startActivity(intent);
+        binding.bottomNavigation.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.navigation_tasks) {
+                loadFragment(new TasksFragment(), "Tasks");
+                return true;
+            } else if (itemId == R.id.navigation_classrooms) {
+                loadFragment(new ClassroomsFragment(), "Classrooms");
+                return true;
+            } else if (itemId == R.id.navigation_notifications) {
+                loadFragment(new NotificationsFragment(), "Notifications");
+                return true;
+            }
+            return false;
         });
     }
 
-    private void observeTasks() {
-        viewModel.getAllTasks().observe(this, tasks -> {
-            adapter.submitList(tasks);
-            if (tasks == null || tasks.isEmpty()) {
-                binding.layoutEmptyState.setVisibility(View.VISIBLE);
-                binding.recyclerViewTasks.setVisibility(View.GONE);
-            } else {
-                binding.layoutEmptyState.setVisibility(View.GONE);
-                binding.recyclerViewTasks.setVisibility(View.VISIBLE);
-            }
-        });
+    private void checkInternetConnection() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+        if (isConnected) {
+            binding.layoutError.getRoot().setVisibility(View.GONE);
+        } else {
+            binding.layoutError.getRoot().setVisibility(View.VISIBLE);
+        }
     }
 
-    private void setupSwipeToDelete() {
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                int position = viewHolder.getAdapterPosition();
-                Task taskToDelete = adapter.getTaskAt(position);
-                deleteAlert(taskToDelete);
-            }
-        }).attachToRecyclerView(binding.recyclerViewTasks);
-    }
-
-    private void deleteAlert(Task task) {
-        viewModel.delete(task);
-        Snackbar.make(binding.main, "Alert removed", Snackbar.LENGTH_LONG)
-                .setAction("Undo", v -> viewModel.insert(task))
-                .setAnchorView(binding.fabAddTask)
-                .show();
-    }
-
-    @Override
-    public void onTaskCheckedChange(Task task, boolean isChecked) {
-        task.setIsCompleted(isChecked ? 1 : 0);
-        viewModel.update(task);
-    }
-
-    @Override
-    public void onEditClick(Task task) {
-        Intent intent = new Intent(this, AddTaskActivity.class);
-        intent.putExtra("TASK_ID", task.getId());
-        intent.putExtra("TASK_TITLE", task.getTitle());
-        intent.putExtra("TASK_SUBJECT", task.getSubject());
-        intent.putExtra("TASK_DUE_DATE", task.getDueDate());
-        intent.putExtra("TASK_COMPLETED", task.getIsCompleted());
-        startActivity(intent);
-    }
-
-    @Override
-    public void onDeleteClick(Task task) {
-        new MaterialAlertDialogBuilder(this)
-                .setTitle("Delete Alert")
-                .setMessage("Are you sure you want to delete this alert?")
-                .setPositiveButton("Delete", (dialog, which) -> deleteAlert(task))
-                .setNegativeButton("Cancel", null)
-                .show();
+    private void loadFragment(Fragment fragment, String title) {
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.nav_host_fragment, fragment);
+        ft.commit();
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(title);
+        } else {
+            binding.toolbar.setTitle(title);
+        }
     }
 }

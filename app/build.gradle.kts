@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    // alias(libs.plugins.google.services)
 }
 
 android {
@@ -46,6 +47,14 @@ dependencies {
     implementation(libs.work.runtime)
     implementation(libs.recyclerview)
     implementation(libs.cardview)
+
+    // Navigation
+    implementation(libs.navigation.fragment)
+    implementation(libs.navigation.ui)
+
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.firestore)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
