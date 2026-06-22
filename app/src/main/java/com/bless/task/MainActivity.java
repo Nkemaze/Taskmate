@@ -21,7 +21,7 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.List;
 
 /**
- * Main Activity showing the list of tasks with a professional Material 3 UI.
+ * Main Activity for CampusAlert - managing campus-related tasks and alerts.
  */
 public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTaskClickListener {
 
@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
         binding.recyclerViewTasks.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerViewTasks.setAdapter(adapter);
         
-        // Add some padding to the bottom so the FAB doesn't cover the last item
         binding.recyclerViewTasks.setClipToPadding(false);
         binding.recyclerViewTasks.setPadding(0, 0, 0, 100);
     }
@@ -84,14 +83,14 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
                 Task taskToDelete = adapter.getTaskAt(position);
-                deleteTask(taskToDelete);
+                deleteAlert(taskToDelete);
             }
         }).attachToRecyclerView(binding.recyclerViewTasks);
     }
 
-    private void deleteTask(Task task) {
+    private void deleteAlert(Task task) {
         viewModel.delete(task);
-        Snackbar.make(binding.main, "Task removed", Snackbar.LENGTH_LONG)
+        Snackbar.make(binding.main, "Alert removed", Snackbar.LENGTH_LONG)
                 .setAction("Undo", v -> viewModel.insert(task))
                 .setAnchorView(binding.fabAddTask)
                 .show();
@@ -117,9 +116,9 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnTas
     @Override
     public void onDeleteClick(Task task) {
         new MaterialAlertDialogBuilder(this)
-                .setTitle("Delete Task")
-                .setMessage("Are you sure you want to delete this task?")
-                .setPositiveButton("Delete", (dialog, which) -> deleteTask(task))
+                .setTitle("Delete Alert")
+                .setMessage("Are you sure you want to delete this alert?")
+                .setPositiveButton("Delete", (dialog, which) -> deleteAlert(task))
                 .setNegativeButton("Cancel", null)
                 .show();
     }

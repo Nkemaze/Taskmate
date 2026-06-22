@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/primary"
-            app:title="TaskMate"
+            app:title="CampusAlert"
             app:titleTextColor="@color/on_primary" />
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -50,7 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="No tasks yet. Add one!"
+            android:text="No alerts yet. Add one!"
             android:textColor="@color/text_grey"
             android:textSize="16sp" />
     </LinearLayout>
@@ -61,7 +61,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:text="Add Task"
+        android:text="Add Alert"
         android:textColor="@android:color/white"
         app:backgroundTint="@color/accent"
         app:icon="@drawable/ic_add"
