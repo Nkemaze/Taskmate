@@ -15,6 +15,8 @@ import com.bless.task.R;
 import com.bless.task.data.Task;
 import com.bless.task.databinding.ItemTaskBinding;
 
+import java.util.Objects;
+
 /**
  * Adapter for the Task RecyclerView.
  */
@@ -41,10 +43,16 @@ public class TaskAdapter extends ListAdapter<Task, TaskAdapter.TaskViewHolder> {
 
         @Override
         public boolean areContentsTheSame(@NonNull Task oldItem, @NonNull Task newItem) {
-            return oldItem.getTitle().equals(newItem.getTitle()) &&
-                    oldItem.getSubject().equals(newItem.getSubject()) &&
-                    oldItem.getDueDate().equals(newItem.getDueDate()) &&
-                    oldItem.getIsCompleted() == newItem.getIsCompleted();
+            // Updated to check ALL fields including custom reminders and notes
+            return oldItem.getIsCompleted() == newItem.getIsCompleted() &&
+                    oldItem.getReminderEnabled() == newItem.getReminderEnabled() &&
+                    Objects.equals(oldItem.getTitle(), newItem.getTitle()) &&
+                    Objects.equals(oldItem.getSubject(), newItem.getSubject()) &&
+                    Objects.equals(oldItem.getDueDate(), newItem.getDueDate()) &&
+                    Objects.equals(oldItem.getDueTime(), newItem.getDueTime()) &&
+                    Objects.equals(oldItem.getNotes(), newItem.getNotes()) &&
+                    Objects.equals(oldItem.getDefaultReminders(), newItem.getDefaultReminders()) &&
+                    Objects.equals(oldItem.getCustomReminders(), newItem.getCustomReminders());
         }
     };
 
@@ -74,7 +82,7 @@ public class TaskAdapter extends ListAdapter<Task, TaskAdapter.TaskViewHolder> {
 
         public void bind(Task task) {
             binding.textTaskTitle.setText(task.getTitle());
-            binding.textDueDate.setText(task.getDueDate());
+            binding.textDueDate.setText(task.getDueDate() + " " + task.getDueTime());
             binding.chipSubject.setText(task.getSubject());
             
             // Remove listener before setting check state to avoid recursion

@@ -20,14 +20,14 @@ public class AlertAdapter extends ListAdapter<CampusAlert, AlertAdapter.AlertVie
     private static final DiffUtil.ItemCallback<CampusAlert> DIFF_CALLBACK = new DiffUtil.ItemCallback<CampusAlert>() {
         @Override
         public boolean areItemsTheSame(@NonNull CampusAlert oldItem, @NonNull CampusAlert newItem) {
+            if (oldItem.getId() == null || newItem.getId() == null) return false;
             return oldItem.getId().equals(newItem.getId());
         }
 
         @Override
         public boolean areContentsTheSame(@NonNull CampusAlert oldItem, @NonNull CampusAlert newItem) {
-            return oldItem.getTitle().equals(newItem.getTitle()) &&
-                    oldItem.getMessage().equals(newItem.getMessage()) &&
-                    oldItem.getTimestamp().equals(newItem.getTimestamp());
+            return (oldItem.getTitle() != null && oldItem.getTitle().equals(newItem.getTitle())) &&
+                    (oldItem.getMessage() != null && oldItem.getMessage().equals(newItem.getMessage()));
         }
     };
 
@@ -40,7 +40,10 @@ public class AlertAdapter extends ListAdapter<CampusAlert, AlertAdapter.AlertVie
 
     @Override
     public void onBindViewHolder(@NonNull AlertViewHolder holder, int position) {
-        holder.bind(getItem(position));
+        CampusAlert alert = getItem(position);
+        if (alert != null) {
+            holder.bind(alert);
+        }
     }
 
     static class AlertViewHolder extends RecyclerView.ViewHolder {
@@ -52,9 +55,10 @@ public class AlertAdapter extends ListAdapter<CampusAlert, AlertAdapter.AlertVie
         }
 
         public void bind(CampusAlert alert) {
-            binding.textAlertTitle.setText(alert.getTitle());
-            binding.textAlertMessage.setText(alert.getMessage());
-            binding.textTimestamp.setText(alert.getTimestamp());
+            if (alert == null) return;
+            binding.textAlertTitle.setText(alert.getTitle() != null ? alert.getTitle() : "Alert");
+            binding.textAlertMessage.setText(alert.getMessage() != null ? alert.getMessage() : "");
+            binding.textTimestamp.setText(alert.getTimestamp() != null ? alert.getTimestamp() : "");
         }
     }
 }

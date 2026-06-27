@@ -65,9 +65,11 @@ public class TasksFragment extends Fragment implements TaskAdapter.OnTaskClickLi
             if (tasks == null || tasks.isEmpty()) {
                 binding.layoutEmptyState.setVisibility(View.VISIBLE);
                 binding.recyclerViewTasks.setVisibility(View.GONE);
+                binding.cardSecurity.setVisibility(View.VISIBLE);
             } else {
                 binding.layoutEmptyState.setVisibility(View.GONE);
                 binding.recyclerViewTasks.setVisibility(View.VISIBLE);
+                binding.cardSecurity.setVisibility(View.GONE);
             }
         });
     }
@@ -109,7 +111,11 @@ public class TasksFragment extends Fragment implements TaskAdapter.OnTaskClickLi
         intent.putExtra("TASK_TITLE", task.getTitle());
         intent.putExtra("TASK_SUBJECT", task.getSubject());
         intent.putExtra("TASK_DUE_DATE", task.getDueDate());
+        intent.putExtra("TASK_DUE_TIME", task.getDueTime());
         intent.putExtra("TASK_COMPLETED", task.getIsCompleted());
+        intent.putExtra("TASK_DEFAULT_REMINDERS", task.getDefaultReminders());
+        intent.putExtra("TASK_CUSTOM_REMINDERS", task.getCustomReminders());
+        intent.putExtra("TASK_NOTES", task.getNotes());
         startActivity(intent);
     }
 

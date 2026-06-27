@@ -13,15 +13,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bless.task.adapter.AlertAdapter;
 import com.bless.task.data.CampusAlert;
+import com.bless.task.data.LocalAlert;
+import com.bless.task.data.TaskDatabase;
 import com.bless.task.databinding.FragmentNotificationsBinding;
 import com.bless.task.repository.FirebaseService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NotificationsFragment extends Fragment {
 
     private FragmentNotificationsBinding binding;
-    private final MutableLiveData<List<CampusAlert>> alertsLiveData = new MutableLiveData<>();
+    private final MutableLiveData<List<CampusAlert>> firebaseAlerts = new MutableLiveData<>();
+    private List<CampusAlert> localAlertsMapped = new ArrayList<>();
     private final FirebaseService firebaseService = new FirebaseService();
     private AlertAdapter adapter;
 
@@ -36,9 +40,7 @@ public class NotificationsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupRecyclerView();
-        observeAlerts();
-
-        // Fetch initially
+        observeData();
         fetchAlerts();
 
         binding.buttonRefresh.setOnClickListener(v -> fetchAlerts());
@@ -50,23 +52,51 @@ public class NotificationsFragment extends Fragment {
         binding.recyclerViewNotifications.setAdapter(adapter);
     }
 
-    private void observeAlerts() {
-        alertsLiveData.observe(getViewLifecycleOwner(), alerts -> {
-            binding.progressBar.setVisibility(View.GONE);
-            if (alerts == null || alerts.isEmpty()) {
-                binding.layoutEmptyState.setVisibility(View.VISIBLE);
-                binding.recyclerViewNotifications.setVisibility(View.GONE);
-            } else {
-                binding.layoutEmptyState.setVisibility(View.GONE);
-                binding.recyclerViewNotifications.setVisibility(View.VISIBLE);
-                adapter.submitList(alerts);
+    private void observeData() {
+        // Observe Local Reminders (Task Alerts)
+        TaskDatabase.getDatabase(requireContext()).localAlertDao().getAllAlerts().observe(getViewLifecycleOwner(), locals -> {
+            localAlertsMapped = new ArrayList<>();
+            if (locals != null) {
+                for (LocalAlert local : locals) {
+                    CampusAlert mapped = new CampusAlert(local.getTitle(), local.getMessage(), local.getTimestamp(), local.getType());
+                    mapped.setId("local_" + local.getId());
+                    localAlertsMapped.add(mapped);
+                }
             }
+            updateUI();
+        });
+
+        // Observe Cloud Alerts (Firebase)
+        firebaseAlerts.observe(getViewLifecycleOwner(), alerts -> {
+            updateUI();
         });
     }
 
+    private void updateUI() {
+        if (binding == null) return;
+
+        List<CampusAlert> combined = new ArrayList<>(localAlertsMapped);
+        List<CampusAlert> cloud = firebaseAlerts.getValue();
+        if (cloud != null) {
+            combined.addAll(cloud);
+        }
+
+        binding.progressBar.setVisibility(View.GONE);
+        if (combined.isEmpty()) {
+            binding.layoutEmptyState.setVisibility(View.VISIBLE);
+            binding.recyclerViewNotifications.setVisibility(View.GONE);
+        } else {
+            binding.layoutEmptyState.setVisibility(View.GONE);
+            binding.recyclerViewNotifications.setVisibility(View.VISIBLE);
+            adapter.submitList(combined);
+        }
+    }
+
     private void fetchAlerts() {
-        binding.progressBar.setVisibility(View.VISIBLE);
-        firebaseService.fetchCampusAlerts(alertsLiveData);
+        if (binding != null) {
+            binding.progressBar.setVisibility(View.VISIBLE);
+            firebaseService.fetchCampusAlerts(requireContext(), firebaseAlerts);
+        }
     }
 
     @Override

@@ -16,7 +16,7 @@ import java.util.List;
 public interface TaskDao {
 
     @Insert
-    void insert(Task task);
+    long insert(Task task);
 
     @Update
     void update(Task task);
@@ -26,6 +26,9 @@ public interface TaskDao {
 
     @Query("SELECT * FROM tasks ORDER BY id DESC")
     LiveData<List<Task>> getAllTasks();
+
+    @Query("SELECT * FROM tasks")
+    List<Task> getAllTasksSync();
 
     @Query("DELETE FROM tasks")
     void deleteAllTasks();

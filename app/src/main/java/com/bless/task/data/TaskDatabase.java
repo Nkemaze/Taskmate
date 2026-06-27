@@ -10,13 +10,15 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * Room database class for TaskMate.
+ * Room database class for Task.
+ * Incremented version to 5 due to addition of LocalAlert entity.
  */
-@Database(entities = {Task.class, Classroom.class}, version = 2, exportSchema = false)
+@Database(entities = {Task.class, Classroom.class, LocalAlert.class}, version = 5, exportSchema = false)
 public abstract class TaskDatabase extends RoomDatabase {
 
     public abstract TaskDao taskDao();
     public abstract ClassroomDao classroomDao();
+    public abstract LocalAlertDao localAlertDao();
 
     private static volatile TaskDatabase INSTANCE;
     private static final int NUMBER_OF_THREADS = 4;

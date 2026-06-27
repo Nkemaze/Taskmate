@@ -12,7 +12,19 @@
         
         <!-- Background and surface colors -->
         <item name="android:windowBackground">@color/background</item>
+
+        <!-- Custom FAB shape -->
+        <item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>
     </style>
 
     <style name="Theme.CampusAlert" parent="Base.Theme.CampusAlert" />
+
+    <style name="Widget.App.FloatingActionButton" parent="Widget.Material3.FloatingActionButton.Primary">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.CampusAlert.FAB</item>
+    </style>
+
+    <style name="ShapeAppearance.CampusAlert.FAB" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
 </resources>
